@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs #-}
 module DataStructures where
+    
 
 data Register where
     KBD :: Register
@@ -28,7 +29,7 @@ data Register where
     CurLine :: Register
 
 data Dest where
-    DestNull :: Dest
+    DestNull :: Dest --Represents no dest / 000
     M :: Dest
     D :: Dest
     MD :: Dest
@@ -38,7 +39,7 @@ data Dest where
     AMD :: Dest
 
 data Jump where
-    JumpNull :: Jump
+    JumpNull :: Jump -- Represents no jump / 000
     JGT :: Jump
     JEQ :: Jump
     JGE :: Jump
