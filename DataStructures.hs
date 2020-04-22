@@ -81,8 +81,8 @@ data Comp where
 
 
 data Instruction where
-    A_Inst :: Integer  -> Integer -> Instruction
-    C_Instruction :: Integer -> Integer -> Integer -> Comp -> Dest -> Jump -> Instruction
+    A_Inst :: Integer -> Instruction --The Leading Bit is only represented in the binary output.
+    C_Instruction :: Comp -> Dest -> Jump -> Instruction -- The leading 3 bits are only in the binary output, not in the data structure
 
 
 
