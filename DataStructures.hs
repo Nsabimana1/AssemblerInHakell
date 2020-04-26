@@ -1,6 +1,7 @@
 {-# LANGUAGE GADTs #-}
 module DataStructures where
-    
+import qualified Data.Map as M
+
 
 data Register where
     KBD :: Register
@@ -88,30 +89,43 @@ data Instruction where
 
 
 
-symbolTable :: Register -> Integer
-symbolTable KBD = 16384
-symbolTable SP = 0
-symbolTable LCL = 1
-symbolTable ARG = 2
-symbolTable THIS = 3
-symbolTable THAT = 4
-symbolTable R0 = 0
-symbolTable R1 = 1
-symbolTable R2 = 2
-symbolTable R3 = 3
-symbolTable R4 = 4
-symbolTable R5 = 5
-symbolTable R6 = 6
-symbolTable R7 = 7
-symbolTable R8 = 8
-symbolTable R9 = 9
-symbolTable R10 = 10
-symbolTable R11 = 11
-symbolTable R12 = 12
-symbolTable R13 = 13
-symbolTable R14 = 14
-symbolTable R15 = 15
-symbolTable CurrentSymbol = 16
-symbolTable CurLine = 0
+
+
+
+
+--Now as a Map!
+symbolTable = M.fromList([("KBD", 16384), ("SP", 0), ("LCL", 1), ("ARG", 2), ("THIS", 3), ("THAT", 4), ("R0", 0), ("R1", 1), ("R2", 2), ("R3", 3), ("R4", 4), ("R5", 5), ("R6", 6), ("R7",7), ("R8", 8), ("R9", 9), ("R10", 10), ("R11", 11), ("R12", 12), ("R13", 13), ("R14", 14), ("R15", 15), ("currentSymbol", 16), ("curLine", 0)]) :: (M.Map String Integer)
+
+
+
+registersToString :: Register -> String 
+registersToString KBD = "KBD"
+registersToString SP = "SP"
+registersToString LCL = "LCL"
+registersToString ARG = "ARG"
+registersToString THIS = "THIS"
+registersToString THAT = "THAT"
+registersToString R0 = "R0"
+registersToString R1 = "R1"
+registersToString R2 = "R2"
+registersToString R3 = "R3"
+registersToString R4 = "R4"
+registersToString R5 = "R5"
+registersToString R6 = "R6"
+registersToString R7 = "R7"
+registersToString R8 = "R8"
+registersToString R9 = "R9"
+registersToString R10 = "R10"
+registersToString R11 = "R11"
+registersToString R12 = "R12"
+registersToString R13 = "R13"
+registersToString R14 = "R14"
+registersToString R15 = "R15"
+registersToString CurrentSymbol = "CurrentSymbol"
+registersToString CurLine = "CurLine"
+
+
+
+
 
 

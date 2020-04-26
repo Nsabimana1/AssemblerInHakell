@@ -3,6 +3,7 @@
 module ToBinary where
 import DataStructures
 
+
 destToBinary :: Dest -> String
 destToBinary DestNull = "000"
 destToBinary M = "001"
