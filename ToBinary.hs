@@ -5,8 +5,23 @@ module ToBinary where
 import           DataStructures
 import           Numeric
 
+
 --https://rosettacode.org/wiki/Binary_digits#Haskell
+toBin :: Integer -> String
 toBin n = showIntAtBase 2 ("01" !!) n ""
+
+instructionToBinary :: Instruction -> String
+instructionToBinary (A_Inst n) = "1" ++ padUntilFifteenBits (toBin n)
+instructionToBinary (C_Instruction comp dest jump) ="111" ++ compToBinary comp ++ destToBinary dest ++ jmpToBinary jump
+
+padUntilFifteenBits :: String -> String -- This pads out a string for use in A instructions.
+padUntilFifteenBits n = strPadLeft '0' (fromIntegral (15 - length (n))) n
+
+--This is roughly based on the code from https://hackage.haskell.org/package/strings-1.1/docs/Data-Strings.html
+--I couldn't get the package to import, and I also wished to improve on the code, so I decided to rewrite it.
+strPadLeft :: Char -> Integer -> String -> String
+strPadLeft _ 0 right = right
+strPadLeft paddingChar goUntil right = (strPadLeft paddingChar (goUntil - 1) ((replicate 1 paddingChar) ++ right))
 
 destToBinary :: Dest -> String
 destToBinary DestNull = "000"
@@ -27,21 +42,6 @@ jmpToBinary JLT      = "100"
 jmpToBinary JNE      = "101"
 jmpToBinary JLE      = "110"
 jmpToBinary JMP      = "111"
-
-instructionToBinary :: Instruction -> String
-instructionToBinary (A_Inst n) = "1" ++ padUntilFifteenBits (toBin n)
-instructionToBinary (C_Instruction comp dest jump) ="111" ++ compToBinary comp ++ destToBinary dest ++ jmpToBinary jump
--- instructionToBinary (C_Instruction comp dest jump) ="111" ++ compToBinary comp ++ destToBinary dest
-padUntilFifteenBits :: String -> String -- This pads out a string for use in A instructions.
-padUntilFifteenBits n = strPadLeft '0' (fromIntegral (15 - length (n))) n
-
---This is roughly based on the code from https://hackage.haskell.org/package/strings-1.1/docs/Data-Strings.html
---I couldn't get the package to import, and I also wished to improve on the code, so I decided to rewrite it.
-strPadLeft :: Char -> Integer -> String -> String
-strPadLeft _ 0 right = right
-strPadLeft paddingChar goUntil right =
-  (strPadLeft paddingChar (goUntil - 1) ((replicate 1 paddingChar) ++ right))
-
 
 compToBinary :: Comp -> String
 compToBinary Zero                 = "0101010"
@@ -72,3 +72,4 @@ compToBinary D_Minus_M            = "1010011"
 compToBinary M_Minus_D            = "1000111"
 compToBinary D_And_M              = "1000000"
 compToBinary D_Or_M               = "1010101"
+
