@@ -39,9 +39,9 @@ cInstParser_ :: Parser ([Char],[Char])
 cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
 
 
--- To tese for cInstParser
+-- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
 
--- To test for aInstparser
+-- To test for cInstparser
 -- runParser cInstParser_  "AB=C"
 
