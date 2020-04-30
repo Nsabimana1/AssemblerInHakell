@@ -2,6 +2,10 @@
 
 module ToBinary where
 import DataStructures
+import Numeric
+
+--https://rosettacode.org/wiki/Binary_digits#Haskell
+toBin n = showIntAtBase 2 ("01" !!) n ""
 
 
 destToBinary :: Dest -> String
@@ -24,8 +28,26 @@ jmpOpcodeToBinary JNE = "101"
 jmpOpcodeToBinary JLE = "110"
 jmpOpcodeToBinary JMP = "111"
 
+instructionToBinary :: Instruction -> String
+instructionToBinary (A_Inst n) = "1" ++ padUntilFifteenBits (toBin n)
+instructionToBinary (C_Instruction comp dest jump) = "111" ++ compToBinary comp ++ destToBinary dest ++ jmpToBinary jump dest
+
+padUntilFifteenBits :: String -> String -- This pads out a string for use in A instructions.
+padUntilFifteenBits n = strPadLeft '0' (fromIntegral(15-length(n))) n
+
+
+--This is roughly based on the code from https://hackage.haskell.org/package/strings-1.1/docs/Data-Strings.html
+--I couldn't get the package to import, so I had to improvise.
+strPadLeft :: Char -> Integer -> String -> String
+strPadLeft _ 0 right = right
+strPadLeft paddingChar goUntil right = (strPadLeft paddingChar (goUntil - 1) ((replicate 1 paddingChar) ++ right)) 
+
+
+
 jmpToBinary :: Jump -> Dest -> String
 jmpToBinary jmp dest = (jmpOpcodeToBinary jmp) ++ (destToBinary dest)
+
+
 
 compToBinary :: Comp -> String
 compToBinary Zero = "0101010"
