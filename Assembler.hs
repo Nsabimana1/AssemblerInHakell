@@ -40,10 +40,10 @@ cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (DataStructures.stringParser) <*> (((
 
 --Sort the operators based on precedence
 destParser :: Parser Dest
-destParser = (seqA (map char "AMD") *> pure AMD) <|> (seqA (map char "MD") *> pure MD) <|> (seqA (map char "AM") *> pure AM) <|> (seqA (map char "AD") *> pure AD) <|> (char ' ' *> pure DestNull) <|> (char 'M' *> pure M) <|>  (char 'D' *> pure D) <|>  (char 'A' *> pure A) 
+destParser = (seqA (map char "AMD") *> pure AMD) <|> (seqA (map char "MD") *> pure MD) <|> (seqA (map char "AM") *> pure AM) <|> (seqA (map char "AD") *> pure AD) <|> (char 'M' *> pure M) <|>  (char 'D' *> pure D) <|>  (char 'A' *> pure A)  <|> pure DestNull --Haskell doesn't have null characters
 
 jumpParser :: Parser Jump
-jumpParser = (seqA(map char "JGT") *> pure JGT) <|> (seqA(map char "JEQ") *> pure JEQ) <|>(seqA(map char "JGE") *> pure JGE) <|>(seqA(map char "JLT") *> pure JLT) <|>(seqA(map char "JNE") *> pure JNE) <|>(seqA(map char "JLE") *> pure JLE) <|> (seqA(map char "JMP") *> pure JMP) <|> (char ' ' *> pure JumpNull) 
+jumpParser = (seqA(map char "JGT") *> pure JGT) <|> (seqA(map char "JEQ") *> pure JEQ) <|>(seqA(map char "JGE") *> pure JGE) <|>(seqA(map char "JLT") *> pure JLT) <|>(seqA(map char "JNE") *> pure JNE) <|>(seqA(map char "JLE") *> pure JLE) <|> (seqA(map char "JMP") *> pure JMP) <|> pure JumpNull -- Haskell doesn't have null characters 
 
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
