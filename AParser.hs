@@ -102,6 +102,9 @@ posChar = P f
       | otherwise = Just (read ns, rest)
       where (ns, rest) = span isUpper xs
 
+openParen :: Parser Char
+openParen = char '('
 
-
+closedParen :: Parser Char
+closedParen = char ')'
 

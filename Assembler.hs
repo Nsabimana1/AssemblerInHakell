@@ -39,7 +39,10 @@ cInstParser_ :: Parser ([Char],[Char])
 cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser)) 
 
 destParser :: Parser Dest
-destParser = (char ' ' *> pure DestNull) <|> (char 'M' *> pure M) <|>  (char 'D' *> pure D)
+-- destParser = (char ' ' *> pure DestNull) <|> (char 'M' *> pure M) <|>  (char 'D' *> pure D) <|>  (map char "MD" *> Pure MD)
+
+jumpParser :: Parser Jump
+-- jumpParser = (char ' ' *> pure JumpNull) <|> (char 'JGT' *> pure JGT) <|> (char 'JEQ' *> pure 'JEQ') <|>(char 'JGE' *> pure JGE) <|>(char 'JLT' *> pure JLT) <|>(char 'JNE' *> pure JNE) <|>(char 'JLE' *> pure JLE) <|> (char 'JMP' *> pure JMP)
 
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
