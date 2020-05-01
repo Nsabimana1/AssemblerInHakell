@@ -73,3 +73,4 @@ compToBinary M_Minus_D            = "1000111"
 compToBinary D_And_M              = "1000000"
 compToBinary D_Or_M               = "1010101"
 
+strToInstParser :: Parser Integer
