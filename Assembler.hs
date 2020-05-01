@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 import AParser
-
+import DataStructures
 import                      Data.Char
 import                      Control.Applicative
 import                      Data.String
@@ -24,19 +24,22 @@ import                      Data.String
 -- M=D
 
 oneOrMore :: Parser a -> Parser [a]
-oneOrMore p = fmap(\s ss -> s: ss) p <*> zeroOrMore p 
+oneOrMore p = fmap(\s ss -> s: ss) p <*> DataStructures.zeroOrMore p 
 
 zeroOrMore :: Parser a -> Parser [a]
-zeroOrMore p = (oneOrMore p) <|> pure []
+zeroOrMore p = (DataStructures.oneOrMore p) <|> pure []
 
 aInstParser_ :: Parser ()
 aInstParser_ = fmap (\_ -> ()) (char '@')
 
 stringParser :: Parser [Char]
-stringParser = fmap oneOrMore satisfy(isAlpha)
+stringParser = fmap DataStructures.oneOrMore satisfy(isAlpha)
 
 cInstParser_ :: Parser ([Char],[Char])
-cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
+cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser)) 
+
+destParser :: Parser Dest
+destParser = (char ' ' *> pure DestNull) <|> (char 'M' *> pure M) <|>  (char 'D' *> pure D)
 
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
