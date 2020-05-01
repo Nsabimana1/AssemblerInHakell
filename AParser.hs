@@ -4,7 +4,7 @@
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
-module AParser (Parser, runParser, satisfy, char, posInt) where
+module AParser (Parser, runParser, satisfy, char, posInt, seqA) where
 
 import           Data.Char
 import           Control.Applicative
@@ -108,3 +108,6 @@ openParen = char '('
 closedParen :: Parser Char
 closedParen = char ')'
 
+seqA :: Applicative f => [f a] -> f [a]
+seqA [] = pure []
+seqA (fa:fas) = (:)<$> fa <*> seqA fas
