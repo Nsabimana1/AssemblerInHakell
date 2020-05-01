@@ -38,7 +38,6 @@ stringParser = fmap oneOrMore satisfy(isAlpha)
 cInstParser_ :: Parser ([Char],[Char])
 cInstParser_ = fmap(\s1 -> \s2 -> (s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
 
-
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
 

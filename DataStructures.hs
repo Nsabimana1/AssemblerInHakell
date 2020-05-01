@@ -2,6 +2,11 @@
 module DataStructures where
 import qualified Data.Map as M
 
+import AParser
+
+import                      Data.Char
+import                      Control.Applicative
+import                      Data.String
 
 data Register where
     KBD :: Register
@@ -28,6 +33,7 @@ data Register where
     R15 :: Register
     CurrentSymbol :: Register
     CurLine :: Register
+    deriving Show
 
 data Dest where
     DestNull :: Dest --Represents no dest / 000
@@ -38,6 +44,7 @@ data Dest where
     AM :: Dest
     AD :: Dest
     AMD :: Dest
+    deriving Show
 
 data Jump where
     JumpNull :: Jump -- Represents no jump / 000
@@ -48,6 +55,7 @@ data Jump where
     JNE :: Jump
     JLE :: Jump
     JMP :: Jump
+    deriving Show
 
 data Comp where
     Zero :: Comp
@@ -78,6 +86,7 @@ data Comp where
     M_Minus_D :: Comp
     D_And_M :: Comp
     D_Or_M :: Comp    
+    deriving Show
 
 
 
@@ -85,7 +94,28 @@ data Comp where
 data Instruction where
     A_Inst :: Integer -> Instruction --The Leading Bit is only represented in the binary output.
     C_Instruction :: Comp -> Dest -> Jump -> Instruction -- The leading 3 bits are only in the binary output, not in the data structure
+    deriving Show
 
+oneOrMore :: Parser a -> Parser [a]
+oneOrMore p = fmap(\s ss -> s: ss) p <*> zeroOrMore p 
+
+zeroOrMore :: Parser a -> Parser [a]
+zeroOrMore p = (oneOrMore p) <|> pure []
+
+stringParser :: Parser [Char]
+stringParser = fmap oneOrMore satisfy(isAlpha)
+       
+removesymbol :: Parser String
+removesymbol = zeroOrMore (satisfy (== '@'))
+
+parsemaybehelper :: Maybe a -> a
+parsemaybehelper (Just a) = a
+
+aInstParser :: Parser Instruction
+aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (parsemaybehelper (M.lookup s symbolTable))) (stringParser)))
+
+cInstParser :: Parser ([Char],[Char])
+cInstParser = fmap(\s1 -> \s2 -> (s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
 
 --Now as a Map!
 symbolTable = M.fromList([("KBD", 16384), ("SP", 0), ("LCL", 1), ("ARG", 2), ("THIS", 3), ("THAT", 4), ("R0", 0), ("R1", 1), ("R2", 2), ("R3", 3), ("R4", 4), ("R5", 5), ("R6", 6), ("R7",7), ("R8", 8), ("R9", 9), ("R10", 10), ("R11", 11), ("R12", 12), ("R13", 13), ("R14", 14), ("R15", 15), ("currentSymbol", 16), ("curLine", 0)]) :: (M.Map String Integer)
