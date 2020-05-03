@@ -97,8 +97,6 @@ data Instruction where
     C_Instruction :: Comp -> Dest -> Jump -> Instruction -- The leading 3 bits are only in the binary output, not in the data structure
     deriving Show
 
-oneOrMore :: Parser a -> Parser [a]
-oneOrMore p = fmap(\s ss -> s: ss) p <*> zeroOrMore p 
 
 zeroOrMore :: Parser a -> Parser [a]
 zeroOrMore p = (oneOrMore p) <|> pure []
