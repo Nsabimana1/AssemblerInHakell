@@ -2,11 +2,13 @@
 {-# LANGUAGE InstanceSigs         #-}
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE TypeSynonymInstances #-}
-
+module Parser where
 import           AParser
 import           Control.Applicative
 import           Data.Char
 import           Data.String
+import qualified Data.Map as M
+
 import           DataStructures
 
 -- // This file is part of www.nand2tetris.org
@@ -21,23 +23,24 @@ import           DataStructures
 -- @0
 -- M=D
 oneOrMore :: Parser a -> Parser [a]
-oneOrMore p = fmap (\s ss -> s : ss) p <*> DataStructures.zeroOrMore p
+oneOrMore p = fmap (\s ss -> s : ss) p <*> zeroOrMore p
 
 zeroOrMore :: Parser a -> Parser [a]
-zeroOrMore p = (DataStructures.oneOrMore p) <|> pure []
+zeroOrMore p = (oneOrMore p) <|> pure []
 
-aInstParser_ :: Parser ()
-aInstParser_ = fmap (\_ -> ()) (char '@')
+aInstParser :: Parser Instruction
+aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (parsemaybehelper (M.lookup s symbolTable))) (Parser.stringParser)))
 
 stringParser :: Parser [Char]
-stringParser = fmap DataStructures.oneOrMore satisfy (isAlpha)
+stringParser = fmap oneOrMore satisfy (isAlpha)
 
 -- cInstParser_ :: Parser ([Char], [Char])
 -- cInstParser_ =
 --   fmap (\s1 -> \s2 -> (s1, s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser))
 
 -- cInstParser :: Parser Instruction
--- cInstParser = C_Instruction <$> destParser <*> char '=' <*> compParser <*> pure JumpNull
+-- cInstParser = (\dest comp -> C_Instruction(comp dest JumpNull))<$>destParser <*> (char '=' *> compParser)
+-- cInstParser = (C_Instruction <$> compParser <*> (char '=' *> destParser) <*> pure JumpNull)
 
 
 --Sort the operators based on precedence
@@ -62,8 +65,14 @@ jumpParser =
   pure JumpNull -- Haskell doesn't have null characters
 
 compParser :: Parser Comp
-compParser = undefined
+compParser = (char 'M' *> pure M_Comp) <|> pure Zero
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
 -- To test for cInstparser
 -- runParser cInstParser_  "AB=C"
+
+removesymbol :: Parser String
+removesymbol = zeroOrMore (satisfy (== '@'))
+
+parsemaybehelper :: Maybe a -> a
+parsemaybehelper (Just a) = a
