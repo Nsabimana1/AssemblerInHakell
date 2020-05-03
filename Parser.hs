@@ -27,15 +27,23 @@ oneOrMore p = fmap (\s ss -> s : ss) p <*> zeroOrMore p
 zeroOrMore :: Parser a -> Parser [a]
 zeroOrMore p = (oneOrMore p) <|> pure []
 
-aInstParser :: Parser Instruction
-aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (parsemaybehelper (M.lookup s symbolTable))) (Parser.stringParser)))
-
 stringParser :: Parser [Char]
-stringParser = fmap oneOrMore satisfy (isAlpha)
+stringParser = fmap oneOrMore satisfy ( \s -> (s == '+') || (s == '-') || (s == '&') || (s == '|') || (s == '!') || (isAlpha s) || (isDigit s)) 
 
--- cInstParser_ :: Parser ([Char], [Char])
--- cInstParser_ =
---   fmap (\s1 -> \s2 -> (s1, s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser))
+helper :: Maybe (a, b) -> a
+helper (Just(a, b)) =  a
+
+aInstParser :: Parser Instruction
+aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (mHelper (M.lookup s symbolTable))) (Parser.stringParser)))
+
+cInstParser :: Parser Instruction
+cInstParser =
+      (fmap (\s1 -> \s2 -> (C_Instruction (helper (runParser compParser s2)) (helper (runParser destParser s1)) (JumpNull))) (stringParser) <*> ((char '=') *> (stringParser)))
+  <|> (fmap (\s1 -> \s2 -> (C_Instruction (helper (runParser compParser s1)) (DestNull) (helper (runParser jumpParser s2)) )) (stringParser) <*> ((char ';') *> (stringParser)))
+
+  -- <|> (fmap (\s1 -> \s2 -> (s1, s2)) (stringParser) <*> ((char ';') *> (stringParser)))
+-- cInstParser :: Parser Instruction
+-- cInstParser = fmap(\comp dest jump -> (C_Instruction comp dest jump)) (compParser <*> destParser <*>
 
 -- cInstParser :: Parser Instruction
 -- cInstParser = (\dest comp -> C_Instruction(comp dest JumpNull))<$>destParser <*> (char '=' *> compParser)
@@ -107,5 +115,5 @@ compParser =
 removesymbol :: Parser String
 removesymbol = zeroOrMore (satisfy (== '@'))
 
-parsemaybehelper :: Maybe a -> a
-parsemaybehelper (Just a) = a
+mHelper :: Maybe a -> a
+mHelper (Just a) = a

@@ -89,32 +89,29 @@ data Comp where
     deriving Show
 
 
-
-
-
 data Instruction where
     A_Inst :: Integer -> Instruction --The Leading Bit is only represented in the binary output.
     C_Instruction :: Comp -> Dest -> Jump -> Instruction -- The leading 3 bits are only in the binary output, not in the data structure
     deriving Show
 
 
-zeroOrMore :: Parser a -> Parser [a]
-zeroOrMore p = (oneOrMore p) <|> pure []
+-- zeroOrMore :: Parser a -> Parser [a]
+-- zeroOrMore p = (oneOrMore p) <|> pure []
 
-stringParser :: Parser [Char]
-stringParser = fmap oneOrMore satisfy(isAlpha)
+-- stringParser :: Parser [Char]
+-- stringParser = fmap oneOrMore satisfy(isAlpha)
        
-removesymbol :: Parser String
-removesymbol = zeroOrMore (satisfy (== '@'))
+-- removesymbol :: Parser String
+-- removesymbol = zeroOrMore (satisfy (== '@'))
 
-parsemaybehelper :: Maybe a -> a
-parsemaybehelper (Just a) = a
+-- parsemaybehelper :: Maybe a -> a
+-- parsemaybehelper (Just a) = a
 
-aInstParser :: Parser Instruction
-aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (parsemaybehelper (M.lookup s symbolTable))) (stringParser)))
+-- aInstParser :: Parser Instruction
+-- aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A_Inst (parsemaybehelper (M.lookup s symbolTable))) (stringParser)))
 
-cInstParser :: Parser ([Char],[Char])
-cInstParser = fmap(\s1 -> \s2 ->(s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
+-- cInstParser :: Parser ([Char],[Char])
+-- cInstParser = fmap(\s1 -> \s2 ->(s1,s2)) (stringParser) <*> (((char '=') <|> (char ';')) *> (stringParser)) 
 
 -- destParser :: Parser Dest
 -- destParser = Zero
