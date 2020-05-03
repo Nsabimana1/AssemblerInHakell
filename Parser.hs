@@ -82,7 +82,7 @@ compParser =
   (seqA (map char "D&M") *> pure D_And_M) <|>
   (seqA (map char "D|M") *> pure D_Or_M) <|> --Three characters
 
-  (seqA (map char "-1") *> pure NegativeOne) <|>
+  (seqA (map char "-1") *> pure NegativeOne) <|> --Two characters
   (seqA (map char "!D") *> pure Not_D_Register) <|>
   (seqA (map char "!A") *> pure Not_Address_Register) <|>
   (seqA (map char "-D") *> pure Minus_D) <|>
@@ -90,14 +90,14 @@ compParser =
   (seqA (map char "!M") *> pure Not_M) <|>
   (seqA (map char "-M") *> pure Minus_M) <|>
 
-  (char '1' *> pure One) <|>
+  (char '1' *> pure One) <|> --One character
   (char 'D' *> pure D_Register) <|>
   (char 'A' *> pure Address_Register) <|>
   (char 'M' *> pure M_Comp) <|>
   (char '0' *> pure Zero) <|>
 
 
-  pure Zero -- Haskell doesn't have null characters
+  pure Zero -- Fallback of null character, since Haskell doesn't support empty strings.
 
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
