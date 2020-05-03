@@ -4,6 +4,7 @@ module ToBinary where
 
 import           DataStructures
 import           Numeric
+import           Parser
 
 
 --https://rosettacode.org/wiki/Binary_digits#Haskell

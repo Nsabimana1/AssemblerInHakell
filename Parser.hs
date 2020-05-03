@@ -28,7 +28,7 @@ zeroOrMore :: Parser a -> Parser [a]
 zeroOrMore p = (oneOrMore p) <|> pure []
 
 stringParser :: Parser [Char]
-stringParser = fmap oneOrMore satisfy ( \s -> (s == '+') || (s == '-') || (s == '&') || (s == '|') || (s == '!') || (isAlpha s) || (isDigit s)) 
+stringParser = fmap oneOrMore satisfy (\s -> (s == '+') || (s == '-') || (s == '&') || (s == '|') || (s == '!') || (isAlpha s) || (isDigit s)) 
 
 helper :: Maybe (a, b) -> a
 helper (Just(a, b)) =  a
@@ -41,9 +41,6 @@ cInstParser =
       (fmap (\s1 -> \s2 -> (C_Instruction (helper (runParser compParser s2)) (helper (runParser destParser s1)) (JumpNull))) (stringParser) <*> ((char '=') *> (stringParser)))
   <|> (fmap (\s1 -> \s2 -> (C_Instruction (helper (runParser compParser s1)) (DestNull) (helper (runParser jumpParser s2)) )) (stringParser) <*> ((char ';') *> (stringParser)))
 
-  -- <|> (fmap (\s1 -> \s2 -> (s1, s2)) (stringParser) <*> ((char ';') *> (stringParser)))
--- cInstParser :: Parser Instruction
--- cInstParser = fmap(\comp dest jump -> (C_Instruction comp dest jump)) (compParser <*> destParser <*>
 
 -- cInstParser :: Parser Instruction
 -- cInstParser = (\dest comp -> C_Instruction(comp dest JumpNull))<$>destParser <*> (char '=' *> compParser)
