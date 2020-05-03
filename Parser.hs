@@ -32,9 +32,13 @@ aInstParser_ = fmap (\_ -> ()) (char '@')
 stringParser :: Parser [Char]
 stringParser = fmap DataStructures.oneOrMore satisfy (isAlpha)
 
-cInstParser_ :: Parser ([Char], [Char])
-cInstParser_ =
-  fmap (\s1 -> \s2 -> (s1, s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser))
+-- cInstParser_ :: Parser ([Char], [Char])
+-- cInstParser_ =
+--   fmap (\s1 -> \s2 -> (s1, s2)) (DataStructures.stringParser) <*> (((char '=') <|> (char ';')) *> (DataStructures.stringParser))
+
+-- cInstParser :: Parser Instruction
+-- cInstParser = C_Instruction <$> destParser <*> char '=' <*> compParser <*> pure JumpNull
+
 
 --Sort the operators based on precedence
 destParser :: Parser Dest
@@ -57,7 +61,8 @@ jumpParser =
   (seqA (map char "JMP") *> pure JMP) <|>
   pure JumpNull -- Haskell doesn't have null characters
 
-  
+compParser :: Parser Comp
+compParser = undefined
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
 -- To test for cInstparser
