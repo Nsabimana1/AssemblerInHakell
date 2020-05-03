@@ -6,7 +6,6 @@ module Parser where
 import           AParser
 import           Control.Applicative
 import           Data.Char
-import           Data.String
 import qualified Data.Map as M
 
 import           DataStructures
@@ -41,7 +40,7 @@ stringParser = fmap oneOrMore satisfy (isAlpha)
 -- cInstParser :: Parser Instruction
 -- cInstParser = (\dest comp -> C_Instruction(comp dest JumpNull))<$>destParser <*> (char '=' *> compParser)
 -- cInstParser = (C_Instruction <$> compParser <*> (char '=' *> destParser) <*> pure JumpNull)
-
+-- cInstParser =  ((\dest comp -> C_Instruction(comp dest JumpNull))) <$> destParser <*> (char '=' *> compParser) <*> pure JumpNull
 
 --Sort the operators based on precedence
 destParser :: Parser Dest
@@ -65,7 +64,41 @@ jumpParser =
   pure JumpNull -- Haskell doesn't have null characters
 
 compParser :: Parser Comp
-compParser = (char 'M' *> pure M_Comp) <|> pure Zero
+compParser =
+  (seqA (map char "D+1") *> pure D_Plus_One) <|>
+  (seqA (map char "A+1") *> pure A_Plus_One) <|>
+  (seqA (map char "D-1") *> pure D_Minus_One) <|>
+  (seqA (map char "A-1") *> pure A_Minus_One) <|>
+  (seqA (map char "D+A") *> pure D_Plus_A) <|>
+  (seqA (map char "D-A") *> pure D_Minus_A) <|>
+  (seqA (map char "A-D") *> pure A_Minus_D) <|>
+  (seqA (map char "D&A") *> pure D_And_A) <|>
+  (seqA (map char "D|A") *> pure D_Or_A) <|>
+  (seqA (map char "M+1") *> pure M_Plus_One) <|>
+  (seqA (map char "M-1") *> pure M_Minus_One) <|>
+  (seqA (map char "D+M") *> pure D_Plus_M) <|>
+  (seqA (map char "D-M") *> pure D_Minus_M) <|>
+  (seqA (map char "M-D") *> pure M_Minus_D) <|>
+  (seqA (map char "D&M") *> pure D_And_M) <|>
+  (seqA (map char "D|M") *> pure D_Or_M) <|> --Three characters
+
+  (seqA (map char "-1") *> pure NegativeOne) <|>
+  (seqA (map char "!D") *> pure Not_D_Register) <|>
+  (seqA (map char "!A") *> pure Not_Address_Register) <|>
+  (seqA (map char "-D") *> pure Minus_D) <|>
+  (seqA (map char "-A") *> pure Minus_A) <|>
+  (seqA (map char "!M") *> pure Not_M) <|>
+  (seqA (map char "-M") *> pure Minus_M) <|>
+
+  (char '1' *> pure One) <|>
+  (char 'D' *> pure D_Register) <|>
+  (char 'A' *> pure Address_Register) <|>
+  (char 'M' *> pure M_Comp) <|>
+  (char '0' *> pure Zero) <|>
+
+
+  pure Zero -- Haskell doesn't have null characters
+
 -- To tese for aInstParser
 -- runParser aInstParser_  "@ABC"
 -- To test for cInstparser
