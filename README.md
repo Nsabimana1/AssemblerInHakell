@@ -20,7 +20,7 @@ It can be renamed to assembler with the command
 
 You can use the program as such:
 
-> assembler [input file.asm] [output file.hack]
+> ./assembler [input file.asm] [output file.hack]
 
 ## Project Layout
 
