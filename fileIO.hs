@@ -9,10 +9,11 @@ main = do
   case args of
     [inputFile, outputFile] -> do 
                                 lines <- lines <$> readFile inputFile
-                                writeArrayToFile outputFile (assembleMultiple lines)
+                                writeArrayToFile outputFile (removeEmptyLines(assembleMultiple lines))
     _ -> putStrLn "Usage: assembler <input file> <output file>"
 
-
+removeEmptyLines :: [String] -> [String]
+removeEmptyLines s = filter (\a -> not (a=="")) s
 
 --https://stackoverflow.com/a/18711075
 readLines :: FilePath -> IO [String]
