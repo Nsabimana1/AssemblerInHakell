@@ -1,11 +1,23 @@
 import System.IO
+import System.Environment
+
 import Assembler
+-- main = do
+--   lines <- lines <$> readFile "MaxL2.asm"
+--   writeArrayToFile "MaxL2.out" (assembleMultiple lines)
+--   -- print lines
+--   -- print (someMethod ls)
+--   -- return ls
+
+main :: IO ()
 main = do
-  lines <- lines <$> readFile "MaxL2.asm"
-  writeArrayToFile "MaxL2.out" (assembleMultiple lines)
-  -- print lines
-  -- print (someMethod ls)
-  -- return ls
+  args <- getArgs
+  case args of
+    [inputFile, outputFile] -> do 
+                                lines <- lines <$> readFile inputFile
+                                writeArrayToFile outputFile (assembleMultiple lines)
+    _ -> putStrLn "Usage: assembler <input file> <output file>"
+
 
 someMethod :: [String] -> Integer
 someMethod a = 1
