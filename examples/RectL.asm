@@ -5,8 +5,10 @@
 
 // Symbol-less version of the Rect.asm program.
 
-@0
-D=M
+//This version is modified to make a 12 wide rectangle for easier demo!
+
+@30
+D=A
 @23
 D;JLE
 @16
