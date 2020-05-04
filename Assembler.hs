@@ -45,3 +45,7 @@ assemble s
             | (head s) == '/' = "/n"
             | (head s) == '(' = "/n"
             | otherwise = ""
+
+assembleMultiple :: [String] -> [String]
+assembleMultiple (a:as) = assemble a : assembleMultiple as
+assembleMultiple [] = []
