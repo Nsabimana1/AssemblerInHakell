@@ -33,6 +33,7 @@ data Register where
     R15 :: Register
     CurrentSymbol :: Register
     CurLine :: Register
+    User_String :: String -> Register
     deriving Show
 
 data Dest where
