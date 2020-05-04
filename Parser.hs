@@ -39,7 +39,7 @@ aInstParser = removesymbol *> ((fmap(\s -> A_Inst s) (posInt)) <|> (fmap(\s -> A
 cInstParser :: Parser Instruction
 cInstParser =
       (fmap (\s1 -> \s2 -> (C_Instruction (cInstHelper (runParser compParser s2)) (cInstHelper (runParser destParser s1)) (JumpNull))) (stringParser) <*> ((char '=') *> (stringParser)))
-  <|> (fmap (\s1 -> \s2 -> (C_Instruction (cInstHelper (runParser compParser s1)) (DestNull) (cInstHelper (runParser jumpParser s2)) )) (stringParser) <*> ((char ';') *> (stringParser)))
+  <|> (fmap (\s1 -> \s2 -> (C_Instruction (cInstHelper (runParser compParser s1)) (DestNull) (cInstHelper (runParser jumpParser s2)))) (stringParser) <*> ((char ';') *> (stringParser)))
 
 
 --Sort the operators based on precedence
