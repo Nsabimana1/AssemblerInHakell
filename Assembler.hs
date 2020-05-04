@@ -43,4 +43,5 @@ assemble s
             | charFound '@' s                         = instructionToBinary (fst (mHelper (runParser Parser.aInstParser s)))      
             | (charFound '=' s) || (charFound ';' s)  = instructionToBinary (fst (mHelper (runParser Parser.cInstParser s)))
             | (head s) == '/' = "/n"
+            | (head s) == '(' = "/n"
             | otherwise = ""
