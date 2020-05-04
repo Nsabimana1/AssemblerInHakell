@@ -24,7 +24,7 @@ You can use the program as such:
 
 ## Project Layout
 
-The project is laid out a such:
+The project is laid out as such:
 
 **AParser** contains most of the primordial parsers that were written by Dr. Yorgey prior to this project. 
 
