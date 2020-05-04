@@ -5,7 +5,11 @@
 
 // Symbol-less version of the Rect.asm program.
 
+<<<<<<< HEAD
 //This version is modified to make a 30 wide rectangle for easier demo!
+=======
+//This version is modified to make a 12 wide rectangle for easier demo!
+>>>>>>> master
 
 @30
 D=A
