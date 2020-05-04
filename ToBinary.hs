@@ -12,7 +12,7 @@ toBin :: Integer -> String
 toBin n = showIntAtBase 2 ("01" !!) n ""
 
 instructionToBinary :: Instruction -> String
-instructionToBinary (A_Inst n) = "1" ++ padUntilFifteenBits (toBin n)
+instructionToBinary (A_Inst n) = "0" ++ padUntilFifteenBits (toBin n)
 instructionToBinary (C_Instruction comp dest jump) ="111" ++ compToBinary comp ++ destToBinary dest ++ jmpToBinary jump
 
 padUntilFifteenBits :: String -> String -- This pads out a string for use in A instructions.
