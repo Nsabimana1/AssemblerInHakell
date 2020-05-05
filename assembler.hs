@@ -3,21 +3,26 @@
 {-# LANGUAGE KindSignatures       #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
-module Assembler where
+-- module Assembler where
 
-import           DataStructures
-import           Numeric
+
 import           Parser
 import           ToBinary
-import qualified Data.Map as M
-import           Prelude (any, foldl, foldr, fst, head)
+import           Prelude 
 import           AParser
-import           Data.Bool
-import           Data.Eq
 
-import            Data.Char
-import            Control.Applicative
-import            Data.String
+import FileIO
+import System.IO
+import System.Environment
+
+main :: IO ()
+main = do
+  args <- getArgs
+  case args of
+    [inputFile, outputFile] -> do 
+                                lines <- lines <$> readFile inputFile
+                                writeArrayToFile outputFile (removeEmptyLines(assembleMultiple lines))
+    _ -> putStrLn "Usage: assembler <input file> <output file>"
 
 charFound :: Char -> String -> Bool
 charFound c s = any (== c) s

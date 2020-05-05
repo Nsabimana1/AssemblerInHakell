@@ -1,16 +1,9 @@
+module FileIO where
 import System.IO
 import System.Environment
 
-import Assembler
 
-main :: IO ()
-main = do
-  args <- getArgs
-  case args of
-    [inputFile, outputFile] -> do 
-                                lines <- lines <$> readFile inputFile
-                                writeArrayToFile outputFile (removeEmptyLines(assembleMultiple lines))
-    _ -> putStrLn "Usage: assembler <input file> <output file>"
+
 
 removeEmptyLines :: [String] -> [String]
 removeEmptyLines s = filter (\a -> not (a=="")) s
