@@ -34,8 +34,8 @@ The project is laid out as such:
 
 **ToBinary** contains functions vital in converting parsed data into binary instructions in the form of strings. 
 
-**Assembler** "glues together" the Parser and ToBinary steps, and acts can act as the entire assembler, although you won't have any IO.
+**Assembler** "glues together" the Parser and ToBinary steps, and acts can act as the entire assembler, although you won't have any IO.  It also contains the main function.
 
-**fileIO** contains the functions for IO, and wraps around the Assembler. It also contains the main function.
+**FileIO** contains the functions for IO, and wraps around the Assembler.
 
 
