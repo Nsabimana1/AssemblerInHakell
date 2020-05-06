@@ -4,10 +4,6 @@ import System.Environment
 
 
 
-
-removeEmptyLines :: [String] -> [String]
-removeEmptyLines s = filter (\a -> not (a=="")) s
-
 --https://stackoverflow.com/a/18711075
 readLines :: FilePath -> IO [String]
 readLines = fmap lines . readFile

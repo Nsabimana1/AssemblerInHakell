@@ -21,21 +21,20 @@ main = do
   case args of
     [inputFile, outputFile] -> do 
                                 lines <- lines <$> readFile inputFile
-                                writeArrayToFile outputFile (removeEmptyLines(assembleMultiple lines))
+                                writeArrayToFile outputFile (assembleMultiple lines)
     _ -> putStrLn "Usage: assembler <input file> <output file>"
 
 charFound :: Char -> String -> Bool
 charFound c s = any (== c) s
 
-
-assemble :: String -> String
+assemble :: String -> Maybe (String)
 assemble s 
-            | charFound '@' s                         = instructionToBinary (fst (mHelper (runParser Parser.aInstParser s)))      
-            | (charFound '=' s) || (charFound ';' s)  = instructionToBinary (fst (mHelper (runParser Parser.cInstParser s)))
-            | (head s) == '/' = ""
-            | (head s) == '(' = ""
-            | otherwise = ""
+            | charFound '@' s                         = Just (instructionToBinary (fst (mHelper (runParser Parser.aInstParser s))))      
+            | (charFound '=' s) || (charFound ';' s)  = Just(instructionToBinary (fst (mHelper (runParser Parser.cInstParser s))))
+            | otherwise = Nothing
 
 assembleMultiple :: [String] -> [String]
-assembleMultiple (a:as) = assemble a : assembleMultiple as
+assembleMultiple (a:as) = case assemble a of 
+                            Just b -> b : assembleMultiple as
+                            Nothing -> assembleMultiple as
 assembleMultiple [] = []
