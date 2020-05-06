@@ -8,14 +8,7 @@ This project is an assembler for the Hack architecture based on the [Nand2Tetris
 
 You can compile this program using this command.
 
-> ghc --make fileIO.hs
-
-This will compile all the needed files and spit out a binary file called fileIO. 
-
-It can be renamed to assembler with the command
-
-> mv fileIO assembler
-
+> ghc --make assembler.hs
 ## Usage
 
 You can use the program as such:
