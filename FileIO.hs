@@ -3,11 +3,6 @@ import System.IO
 import System.Environment
 
 
-
---https://stackoverflow.com/a/18711075
-readLines :: FilePath -> IO [String]
-readLines = fmap lines . readFile
-
 --This is what we actually want to use when writting our assembled code to the file!!!
 writeArrayToFile :: FilePath -> [String] -> IO ()
 writeArrayToFile filePath array = writeLines filePath (unlines array)
